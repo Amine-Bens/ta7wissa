@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "404747635371",
+    "firebase_url": "https://authtest-de27c.firebaseio.com",
+    "project_id": "authtest-de27c",
+    "storage_bucket": "authtest-de27c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:404747635371:android:4a9f6ffc911914167445ee",
+        "android_client_info": {
+          "package_name": "com.hmed.testauth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "404747635371-lpsraj84f8fornti8qsuiimb157rjv8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2I_ZeCBpjTuCELIYX3Vag2Lb9BdVsAqQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "404747635371-lpsraj84f8fornti8qsuiimb157rjv8e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

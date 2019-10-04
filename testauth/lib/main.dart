@@ -3,10 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'ProfileScreen.dart';
-
-
-
-
+import 'package:testauth/Drawer.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -30,25 +27,24 @@ class GoogleSignApp extends StatefulWidget {
 }
 
 class _GoogleSignAppState extends State<GoogleSignApp> {
-
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googlSignIn = new GoogleSignIn();
 
   Future<FirebaseUser> _signIn(BuildContext context) async {
-
     Scaffold.of(context).showSnackBar(new SnackBar(
       content: new Text('Sign in'),
     ));
 
     final GoogleSignInAccount googleUser = await _googlSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =await googleUser.authentication;
-
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
 
-    FirebaseUser userDetails = (await _firebaseAuth.signInWithCredential(credential)).user;
+    FirebaseUser userDetails =
+        (await _firebaseAuth.signInWithCredential(credential)).user;
     ProviderDetails providerInfo = new ProviderDetails(userDetails.providerId);
 
     List<ProviderDetails> providerData = new List<ProviderDetails>();
@@ -70,7 +66,6 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
     return userDetails;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,18 +75,17 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width,
-              height:  MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).size.height,
               child: Image.network(
-                  'https://images.unsplash.com/photo-1518050947974-4be8c7469f0c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'
-                  ,fit: BoxFit.fill,
+                  'https://images.unsplash.com/photo-1518050947974-4be8c7469f0c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
+                  fit: BoxFit.fill,
                   color: Color.fromRGBO(255, 255, 255, 0.6),
-                  colorBlendMode: BlendMode.modulate
-              ),
+                  colorBlendMode: BlendMode.modulate),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height:10.0),
+                SizedBox(height: 10.0),
                 Container(
                     width: 250.0,
                     child: Align(
@@ -103,20 +97,23 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Icon(FontAwesomeIcons.google,color: Color(0xffCE107C),),
-                            SizedBox(width:10.0),
+                            Icon(
+                              FontAwesomeIcons.google,
+                              color: Color(0xffCE107C),
+                            ),
+                            SizedBox(width: 10.0),
                             Text(
                               'Sign in with Google',
-                              style: TextStyle(color: Colors.black,fontSize: 18.0),
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 18.0),
                             ),
-                          ],),
+                          ],
+                        ),
                         onPressed: () => _signIn(context)
                             .then((FirebaseUser user) => print(user))
                             .catchError((e) => print(e)),
                       ),
-                    )
-                ),
-
+                    )),
                 Container(
                     width: 250.0,
                     child: Align(
@@ -128,26 +125,29 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Icon(FontAwesomeIcons.facebookF,color: Color(0xff4754de),),
-                            SizedBox(width:10.0),
+                            Icon(
+                              FontAwesomeIcons.facebookF,
+                              color: Color(0xff4754de),
+                            ),
+                            SizedBox(width: 10.0),
                             Text(
                               'Sign in with Facebook',
-                              style: TextStyle(color: Colors.black,fontSize: 18.0),
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 18.0),
                             ),
-                          ],),
+                          ],
+                        ),
                         onPressed: () {},
                       ),
-                    )
-                ),
+                    )),
               ],
             ),
           ],
-        ),),
+        ),
+      ),
     );
   }
 }
-
-
 
 class UserDetails {
   final String providerDetails;
@@ -156,11 +156,12 @@ class UserDetails {
   final String userEmail;
   final List<ProviderDetails> providerData;
 
-  UserDetails(this.providerDetails,this.userName, this.photoUrl,this.userEmail, this.providerData);
+  UserDetails(this.providerDetails, this.userName, this.photoUrl,
+      this.userEmail, this.providerData);
 }
-
 
 class ProviderDetails {
   ProviderDetails(this.providerDetails);
+
   final String providerDetails;
 }

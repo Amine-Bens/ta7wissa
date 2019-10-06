@@ -3,75 +3,112 @@ import 'main.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'Drawer.dart';
+import 'services/CRUD.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   final UserDetails detailsUser;
 
   ProfileScreen({Key key, @required this.detailsUser}) : super(key: key);
 
   @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+
+
+  crudMethods crudObj=new crudMethods();
+
+  QuerySnapshot places;
+
+  
+
+  void initState(){
+    crudObj.getData().then((results){
+      setState(() {
+        places=results;
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final GoogleSignIn _gSignIn = GoogleSignIn();
 
-
     return Scaffold(
-        drawer: Drawerperso(detailsUser: detailsUser,),
-        appBar: AppBar(
-          leading: Builder(
-              builder: (context) => IconButton(
-                  icon: Icon(Icons.menu),
-                  onPressed: () => Scaffold.of(context).openDrawer())),
-          title: Text(detailsUser.userName),
-          automaticallyImplyLeading: false,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                FontAwesomeIcons.signOutAlt,
-                size: 20.0,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                _gSignIn.signOut();
-                print('Signed out');
-                Navigator.pop(context);
-              },
+      drawer: Drawerperso(
+        detailsUser: widget.detailsUser,
+      ),
+      appBar: AppBar(
+        leading: Builder(
+            builder: (context) => IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () => Scaffold.of(context).openDrawer())),
+        title: Text(widget.detailsUser.userName),
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              FontAwesomeIcons.signOutAlt,
+              size: 20.0,
+              color: Colors.white,
             ),
-          ],
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CircleAvatar(
-                backgroundImage: NetworkImage(detailsUser.photoUrl),
-                radius: 50.0,
-              ),
-              SizedBox(height: 10.0),
-              Text(
-                "Name : " + detailsUser.userName,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 20.0),
-              ),
-              SizedBox(height: 10.0),
-              Text(
-                "Email : " + detailsUser.userEmail,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 20.0),
-              ),
-              SizedBox(height: 10.0),
-              Text(
-                "Provider : " + detailsUser.providerDetails,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 20.0),
-              ),
-            ],
+            onPressed: () {
+              _gSignIn.signOut();
+              print('Signed out');
+              Navigator.pop(context);
+            },
           ),
-        ));
+        ],
+      ),
+      body: _placeList(),
+    );
   }
+
+ Widget _placeList() {
+    if(places != null) {
+      return ListView.builder(
+        itemCount: places.documents.length,
+        padding: EdgeInsets.all(5.0),
+        itemBuilder: (context,i){
+          return  Card(
+            color: Colors.green,
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 180.0,
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned.fill(
+                        child:Image.network("${places.documents[i].data['placeimage']}") ,
+                      ),
+                      Positioned(
+                        bottom: 16.0,
+                        left: 16.0,
+                        right: 16.0,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text("${places.documents[i].data['placename']}",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline
+                                  .copyWith(color: Colors.white)),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+
+        },
+
+
+      );
+    } else {return Text("baliz wait loading");}
+ }
 }

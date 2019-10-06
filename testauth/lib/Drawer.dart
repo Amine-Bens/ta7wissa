@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:testauth/ProfileScreen.dart';
 
 
 class Drawerperso extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'ProfileScreen.dart';
-import 'package:testauth/Drawer.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -77,9 +77,9 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: Image.network(
-                  'https://images.unsplash.com/photo-1518050947974-4be8c7469f0c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
+                  'https://firebasestorage.googleapis.com/v0/b/authtest-de27c.appspot.com/o/splash.jpg?alt=media&token=22aeb68b-ddbb-4f75-8261-44968f1e7900',
                   fit: BoxFit.fill,
-                  color: Color.fromRGBO(255, 255, 255, 0.6),
+                  color: Color.fromRGBO(200, 255, 255, 0.7),
                   colorBlendMode: BlendMode.modulate),
             ),
             Column(
@@ -131,7 +131,7 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
                             ),
                             SizedBox(width: 10.0),
                             Text(
-                              'Sign in with Facebook',
+                              'sign in with fb',
                               style: TextStyle(
                                   color: Colors.black, fontSize: 18.0),
                             ),
@@ -165,3 +165,5 @@ class ProviderDetails {
 
   final String providerDetails;
 }
+
+ //https://images.unsplash.com/photo-1518050947974-4be8c7469f0c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60

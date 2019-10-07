@@ -5,7 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'Drawer.dart';
 import 'services/CRUD.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'services/Maps.dart';
 class ProfileScreen extends StatefulWidget {
   final UserDetails detailsUser;
 
@@ -16,18 +16,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
-
-  crudMethods crudObj=new crudMethods();
+  crudMethods crudObj = new crudMethods();
 
   QuerySnapshot places;
 
-  
-
-  void initState(){
-    crudObj.getData().then((results){
+  void initState() {
+    crudObj.getData().then((results) {
       setState(() {
-        places=results;
+        places = results;
       });
     });
     super.initState();
@@ -67,13 +63,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
- Widget _placeList() {
-    if(places != null) {
+  Widget _placeList() {
+    if (places != null) {
       return ListView.builder(
         itemCount: places.documents.length,
         padding: EdgeInsets.all(5.0),
-        itemBuilder: (context,i){
-          return  Card(
+        itemBuilder: (context, i) {
+          return Card(
             color: Colors.green,
             child: Column(
               children: <Widget>[
@@ -82,7 +78,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Stack(
                     children: <Widget>[
                       Positioned.fill(
-                        child:Image.network("${places.documents[i].data['placeimage']}") ,
+                        child: Image.network(
+                            "${places.documents[i].data['placeimage']}"),
                       ),
                       Positioned(
                         bottom: 16.0,
@@ -91,7 +88,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment: Alignment.centerLeft,
-                          child: Text("${places.documents[i].data['placename']}",
+                          child: Text(
+                              "${places.documents[i].data['placename']}",
                               style: Theme.of(context)
                                   .textTheme
                                   .headline
@@ -100,15 +98,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       )
                     ],
                   ),
+                ),
+                ButtonTheme.bar(
+                  child: ButtonBar(
+                    alignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      FlatButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: (context)=>goMap()) );}, child: Icon(Icons.map)),
+                      FlatButton(onPressed: null, child: Icon(Icons.info))
+                    ],
+                  ),
                 )
               ],
             ),
           );
-
         },
-
-
       );
-    } else {return Text("baliz wait loading");}
- }
+    } else {
+      return Text("baliz wait loading");
+    }
+  }
 }

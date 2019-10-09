@@ -7,8 +7,7 @@ class crudMethods{
   }
   else return false;
   }
-
-  getData() async {
+getData() async {
     return await Firestore.instance.collection('Places').getDocuments();
 }
 }

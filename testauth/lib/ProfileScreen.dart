@@ -6,6 +6,8 @@ import 'Drawer.dart';
 import 'services/CRUD.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'services/Maps.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class ProfileScreen extends StatefulWidget {
   final UserDetails detailsUser;
 
@@ -70,11 +72,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: EdgeInsets.all(5.0),
         itemBuilder: (context, i) {
           return Card(
-            color: Colors.green,
+            elevation: 22.0,
+            color: Colors.white,
             child: Column(
               children: <Widget>[
                 SizedBox(
-                  height: 180.0,
+                  height: 120.0,
                   child: Stack(
                     children: <Widget>[
                       Positioned.fill(
@@ -82,18 +85,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             "${places.documents[i].data['placeimage']}"),
                       ),
                       Positioned(
-                        bottom: 16.0,
+
+                        bottom: 0.0,
                         left: 16.0,
                         right: 16.0,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                              "${places.documents[i].data['placename']}",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline
-                                  .copyWith(color: Colors.white)),
+                          alignment: Alignment.bottomLeft,
+
                         ),
                       )
                     ],
@@ -101,10 +100,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 ButtonTheme.bar(
                   child: ButtonBar(
-                    alignment: MainAxisAlignment.end,
+                    alignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      FlatButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: (context)=>goMap()) );}, child: Icon(Icons.map)),
-                      FlatButton(onPressed: null, child: Icon(Icons.info))
+                  Text(
+                  "${places.documents[i].data['placename']}",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline
+                          .copyWith(color: Colors.black)),
+
+                      new Padding(padding: EdgeInsets.fromLTRB(0, 0, 55, 0)),
+                      FlatButton(
+                          onPressed: () => _getlonglat(i),
+                          child: Icon(Icons.map)),
+                      FlatButton(onPressed: null, child: Icon(Icons.info)),
+
+                      FlatButton(onPressed: (){}, child: Icon(Icons.comment))
                     ],
                   ),
                 )
@@ -117,4 +128,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return Text("baliz wait loading");
     }
   }
+
+  _getlonglat(int i) {
+    longlat longlatt = new longlat(
+        places.documents[i].data['long'], places.documents[i].data['lat']);
+    debugPrint("${places.documents[i].data['long']}");
+    debugPrint("${places.documents[i].data['lat']}");
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => new goMap(
+                  longetlatf: longlatt,
+                )));
+  }
+}
+
+class longlat {
+  final num long;
+
+  final num lat;
+
+  longlat(this.long, this.lat);
 }

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'ProfileScreen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'adminscreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -58,12 +59,24 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
       userDetails.email,
       providerData,
     );
-    Navigator.push(
-      context,
-      new MaterialPageRoute(
-        builder: (context) => new ProfileScreen(detailsUser: details),
-      ),
-    );
+    if (userDetails.email !=null) {
+      String mail= "berchicheamir@gmail.com";
+      if (userDetails.email ==mail ) {
+        Navigator.push(
+          context,
+          new MaterialPageRoute(
+            builder: (context) => new AdminScreen(detailsUser: details),
+          ),
+        );
+      }
+      else {Navigator.push(
+        context,
+        new MaterialPageRoute(
+          builder: (context) => new ProfileScreen(detailsUser: details),
+        ),
+      );}
+    }
+
     return userDetails;
   }
 

@@ -9,6 +9,8 @@ import 'services/Maps.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:testauth/Admins/adminssettings.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:testauth/ProfileScreen.dart';
+
 
 RefreshController _refreshController = RefreshController(initialRefresh: false);
 
@@ -148,13 +150,11 @@ class _AdminScreenState extends State<AdminScreen> {
     debugPrint("${places.documents[i].data['long']}");
     debugPrint("${places.documents[i].data['lat']}");
     Navigator.push(
-        context, new MaterialPageRoute(builder: (context) => new myMap()));
+        context, new MaterialPageRoute(builder: (context) => new MyMap(longlatt)));
   }
 
   _refreshPlaces() async {
     crudMethods crudObj = new crudMethods();
-
-
 
     crudObj.getData().then((results) {
       setState(() {
@@ -164,17 +164,6 @@ class _AdminScreenState extends State<AdminScreen> {
     _refreshController.refreshCompleted();
 
     return _placeList();
-
-
-
   }
-
 }
 
-class longlat {
-  final num long;
-
-  final num lat;
-
-  longlat(this.long, this.lat);
-}

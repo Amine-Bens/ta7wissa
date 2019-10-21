@@ -36,7 +36,6 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
     Scaffold.of(context).showSnackBar(new SnackBar(
       content: new Text('Sign in'),
     ));
-
     final GoogleSignInAccount googleUser = await _googlSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
@@ -44,6 +43,7 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+
 
     FirebaseUser userDetails =
         (await _firebaseAuth.signInWithCredential(credential)).user;
@@ -53,6 +53,7 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
     providerData.add(providerInfo);
 
     UserDetails details = new UserDetails(
+      userDetails.uid,
       userDetails.providerId,
       userDetails.displayName,
       userDetails.photoUrl,
@@ -164,13 +165,14 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
 }
 
 class UserDetails {
+  final String userId;
   final String providerDetails;
   final String userName;
   final String photoUrl;
   final String userEmail;
   final List<ProviderDetails> providerData;
 
-  UserDetails(this.providerDetails, this.userName, this.photoUrl,
+  UserDetails(this.userId,this.providerDetails, this.userName, this.photoUrl,
       this.userEmail, this.providerData);
 }
 

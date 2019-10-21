@@ -7,6 +7,7 @@ import 'services/CRUD.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'services/Maps.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'favoris.dart';
 
 class ProfileScreen extends StatefulWidget {
   final UserDetails detailsUser;
@@ -19,7 +20,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   crudMethods crudObj = new crudMethods();
-
   QuerySnapshot places;
 
   void initState() {
@@ -85,14 +85,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             "${places.documents[i].data['placeimage']}"),
                       ),
                       Positioned(
-
                         bottom: 0.0,
                         left: 16.0,
                         right: 16.0,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment: Alignment.bottomLeft,
-
                         ),
                       )
                     ],
@@ -102,20 +100,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: ButtonBar(
                     alignment: MainAxisAlignment.start,
                     children: <Widget>[
-                  Text(
-                  "${places.documents[i].data['placename']}",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline
-                          .copyWith(color: Colors.black)),
-
+                      Text("${places.documents[i].data['placename']}",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline
+                              .copyWith(color: Colors.black)),
                       new Padding(padding: EdgeInsets.fromLTRB(0, 0, 55, 0)),
                       FlatButton(
                           onPressed: () => _getlonglat(i),
                           child: Icon(Icons.map)),
-                      FlatButton(onPressed: null, child: Icon(Icons.info)),
-
-                      FlatButton(onPressed: (){}, child: Icon(Icons.comment))
+                      FlatButton(
+                          onPressed: () => addFavoris(i),
+                          child: Icon(Icons.favorite)),
                     ],
                   ),
                 )
@@ -133,10 +129,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
     longlat longlatt = new longlat(
         places.documents[i].data['long'], places.documents[i].data['lat']);
 
-    Navigator.push(
-        context,
-        new MaterialPageRoute(
-            builder: (context) => new myMap()));
+    Navigator.push(context,
+        new MaterialPageRoute(builder: (context) => new MyMap(longlatt)));
+  }
+
+  addFavoris(int i) {
+    {
+      {
+        String placename = places.documents[i].data['placename'];
+        String placeimage = places.documents[i].data['placeimage'];
+        num long = places.documents[i].data['long'];
+        num lat = places.documents[i].data['lat'];
+        debugPrint(places.documents[i].data["placename"]);
+        if (places.documents[i].data['favorit'] == false) {
+          setState(() {
+            places.documents[i].data['favorit'] = true;
+          });
+          Firestore.instance
+              .collection('Favoris' + '${widget.detailsUser.userId}')
+              .add({
+            "placename": placename,
+            "placeimage": placeimage,
+            "long": long,
+            "lat": lat,
+            "favorit": true
+          });
+        } else {
+          setState(() {
+            places.documents[i].data['favorit'] = false;
+          });
+
+        }
+      }
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:testauth/services/CRUD.dart';
 import 'admindeleteorupdate.dart';
 import 'package:testauth/adminscreen.dart';
 
@@ -13,7 +14,11 @@ class _AdminSettingsState extends State<AdminSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: (){Navigator.pop(context);}),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
         backgroundColor: Colors.redAccent,
         title: Text("Modifier Les Places"),
       ),
@@ -84,6 +89,7 @@ class _AdminSettingsState extends State<AdminSettings> {
                           "placename": placeNameControler.text,
                           "long": num.parse(placeLongControler.text),
                           "lat": num.parse(placeLatControler.text),
+                          "favorit": placeFavorie
                         })
                         .then((result) => {
                               Navigator.pop(context),

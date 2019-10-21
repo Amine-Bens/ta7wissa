@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+final bool placeFavorie=false;
 
 class crudMethods {
   bool isLoggedIn() {
@@ -11,6 +12,11 @@ class crudMethods {
 
   getData() async {
     return await Firestore.instance.collection('Places').getDocuments();
+  }
+
+  getFav(String userId) async {
+    return await Firestore.instance.collection('Favoris'+'$userId').getDocuments();
+
   }
 
   updateData(selectedDoc, newValues) {
@@ -30,6 +36,16 @@ class crudMethods {
         .delete()
         .catchError((e) {
       print("error");
+    });
+  }
+
+  deletFav(docId,userId) {
+    Firestore.instance
+        .collection('Favoris'+'${userId}')
+        .document(docId)
+        .delete()
+        .catchError((e) {
+      print('Error');
     });
   }
 }
